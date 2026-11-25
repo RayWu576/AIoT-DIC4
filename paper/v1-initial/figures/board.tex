@@ -1,0 +1,11 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=15mm]
+\node[module,text width=23mm] (a) {ARM\\Select and submit};
+\node[module,text width=23mm,right=of a] (f) {FPGA\\Sequence and apply};
+\draw[flow] ([yshift=2mm]a.east)--node[above,font=\scriptsize]{Plan} ([yshift=2mm]f.west);
+\draw[flow] ([yshift=-2mm]f.west)--node[below,font=\scriptsize]{State} ([yshift=-2mm]a.east);
+\end{tikzpicture}
+\caption{ARM plan selection and FPGA phase execution with readback.}
+\label{fig:board}
+\end{figure}

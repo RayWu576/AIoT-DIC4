@@ -1,0 +1,52 @@
+\section{Proposed Scheme}
+\subsection{System Overview}
+Figure~\ref{fig:system} shows the eight modules. Task input specifies the traffic source and operating mode. Validation checks the source, timestamps, units and completeness. Analysis supplies queue estimates and recent arrivals to the selector. Domain rules constrain the recommendation. The explanation module records its basis, while the hardware executor and readback modules provide execution evidence. Insufficient data stop the control request and produce a reason.
+
+\input{figures/system}
+
+\subsection{Traffic Feature Extraction}
+Let $Q_d(t)$ be the estimated queue for axis $d$ at decision time $t$ and $A_d(t;W)$ the number of arrivals in a recent window of duration $W$. The four inputs form
+\begin{equation}
+\mathbf{x}(t)=[Q_{\rm NS}(t),Q_{\rm EW}(t),
+ A_{\rm NS}(t;W),A_{\rm EW}(t;W)]^\mathsf{T}.
+\label{eq:features}
+\end{equation}
+The queue reflects accumulated unserved demand, while the window reflects recent demand. The exact window and service assumptions are unavailable. A source reported at minute resolution can support a quality assessment, but generating finer time steps from it requires explicit reconstruction assumptions.
+
+\begin{table}[t]
+\caption{Traffic features and plan classes}
+\label{tab:features}\centering\footnotesize
+\begin{tabular}{@{}p{.33\columnwidth}p{.62\columnwidth}@{}}
+\toprule Symbol or class & Meaning\\ \midrule
+$Q_{\rm NS}$, $Q_{\rm EW}$ & Estimated queues by axis (vehicles)\\
+$A_{\rm NS}$, $A_{\rm EW}$ & Recent arrivals by axis (vehicles)\\
+Balanced & Neutral allocation and fixed baseline\\
+NS priority & Favors the north--south axis\\
+EW priority & Favors the east--west axis\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Decision Tree-Based Plan Selection}
+The reference rule evaluates candidate timing plans to generate training labels. At inference time, the tree tests features against its thresholds and returns the plan associated with the reached leaf. A decision record contains the feature vector, the taken path or fallback reason, and the selected plan. The training data, tree settings and thresholds are unavailable. A tree approximating the rule can disagree with it, so a comparison with fixed timing alone cannot determine the benefit of approximating the rule.
+
+\subsection{Domain Constraints and Fallback}
+When valid inputs fall outside the feature domain, a rule-based fallback selects a candidate. Data insufficiency is handled earlier as a rejection. Review-only mode reports the decision without submitting it. The submission gate checks the plan class, device validity and expiration. Valid plans preserve phase order and may take effect only at a complete-cycle boundary. Phase intervals depend on the board plan definitions; numerical durations are unavailable.
+
+\subsection{ARM--FPGA Co-Design}
+The ARM side estimates traffic state, chooses a plan and submits a valid request. The FPGA side sequences phases and manages the countdown, applying accepted requests at cycle boundaries. Figure~\ref{fig:board} shows the intended exchange. The verification record compares the recommended and applied plan and reports a discrepancy when they differ. Phase and countdown provide additional state for display. The proposal documents a model and controller prototype; interface details and complete integration logs were unavailable.
+
+\input{figures/board}
+
+\subsection{Explainable Decision and Execution Workflow}
+Figure~\ref{fig:workflow} depicts the intended integration. The pseudocode provides the order of operations.
+\begin{enumerate}
+\item Read the mode and traffic data. Validate the data; report and stop on insufficiency.
+\item Update queues and recent arrivals. Continue to the next observation until a decision boundary is reached.
+\item Check the feature domain. Use the tree in-domain and the fallback rules otherwise.
+\item Record the features, decision path or fallback reason and candidate plan.
+\item In review-only mode, report the recommendation and continue.
+\item Check the plan and device state. Report an invalid or expired request; otherwise submit it.
+\item Apply the accepted plan at a complete-cycle boundary. Read the applied plan, phase and countdown and report the result or mismatch.
+\end{enumerate}
+\input{figures/workflow}

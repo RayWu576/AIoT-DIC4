@@ -1,0 +1,5 @@
+experiment,environment,scenario_count,aggregate_queue_vehicle_second_reduction_pct,degraded_count,qualitative_observation,source
+host_batch_1,synthetic host,18,18.28,5,,Proposal PDF p. 8
+host_batch_2,synthetic host,6,19.71,2,,Proposal PDF p. 8
+board_plan_application,development board,,,,Timing plan application confirmed,Proposal PDF p. 8
+board_directional_reversal,development board and synthetic arrivals,1,,,Lower queue metric reported,Proposal PDF p. 8

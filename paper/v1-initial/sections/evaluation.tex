@@ -1,0 +1,48 @@
+\section{Experimental Evaluation}
+\subsection{Experimental Setup}
+The proposal evaluates synthetic arrivals with a simplified first-in, first-out (FIFO) queue model. The fixed comparator uses the balanced plan throughout, while the adaptive policy can select another plan at a decision boundary. Pairing holds traffic inputs and service assumptions constant. The planned scenario coverage and metric roles are listed in Table~\ref{tab:cases}. A separate reference-rule comparison would help identify the contribution of the learned approximation.
+
+\begin{table}[t]
+\caption{Evaluation scenarios and diagnostic metrics}
+\label{tab:cases}\centering\footnotesize
+\begin{tabular}{@{}p{.34\columnwidth}p{.61\columnwidth}@{}}
+\toprule Scenario & Diagnostic focus\\ \midrule
+Balanced demand & Overall queue and waiting measures\\
+Directional imbalance & Queues and waiting by axis\\
+Directional reversal & Queues during a change in dominant demand\\
+Sudden burst & Peak queue and remaining vehicles\\
+Oversaturation & Persistent queues and remaining vehicles\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Evaluation Metrics}
+For observations at a fixed interval $\Delta t$ in seconds, queue vehicle-seconds quantify cumulative occupancy:
+\begin{equation}
+J=\Delta t\sum_{k=1}^{K}\left(Q_{\rm NS}(k)+Q_{\rm EW}(k)\right).
+\label{eq:queue}
+\end{equation}
+Here $K$ is the number of sampled observations. Relative queue reduction is $100(J_F-J_A)/J_F$ percent for $J_F>0$, where $F$ is fixed and $A$ is adaptive. Average waiting time summarizes time spent queued by vehicles in the chosen analysis population. The proposal does not specify how unfinished waits enter this average. Remaining vehicles are the queues at the end of the run and should accompany waiting results. Directional results retain separate measures for NS and EW. Execution consistency refers to agreement between the recommendation and the applied timing plan.
+
+\subsection{Preliminary Results}
+Table~\ref{tab:results} reports proposal evidence. The host batches were reported independently, with aggregate reductions and scenario counts indicating heterogeneous performance. Neither individual queue totals nor waiting results are available. The board experiment is a separate feasibility check and reports a queue reduction under direction reversal without a magnitude.
+
+\begin{table}[t]
+\caption{Proposal-reported preliminary findings}
+\label{tab:results}\centering\footnotesize
+\begin{tabular}{@{}p{.37\columnwidth}p{.58\columnwidth}@{}}
+\toprule Experiment & Finding\\ \midrule
+Host batch 1, 18 pairs & 18.28\% aggregate queue reduction; 5 degraded\\
+Host batch 2, 6 pairs & 19.71\% aggregate queue reduction; 2 degraded\\
+Development board & Plan application confirmed; lower queue metric in one reversal scenario\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hardware Execution Verification}
+The proposed verification compares the recommended and applied plan, plus phase and countdown observations around the boundary. A plan should apply at the next complete-cycle boundary after acceptance. The available evidence confirms plan application at the level of the proposal summary. Cycle-aligned traces, rejected commands and mismatch cases are unavailable, limiting any stronger claim about execution consistency.
+
+\subsection{Discussion and Limitations}
+Negative scenarios show that aggregate improvement can coexist with regressions. Balanced demand and bursts deserve particular attention; the reported counts do not identify each degraded case. Tree approximation may choose a different timing plan from the reference rule. Boundary-only updates can also delay a response to a short burst or reversal. These are plausible mechanisms that require per-run observations. Direction-specific queues and waits are needed to detect a transfer of delay between movements.
+
+The FIFO model abstracts physical lane use, spillback and vehicle interactions. The available official traffic data are insufficient for a continuous same-intersection replay on both axes. The prototype has no reported road calibration or validation for pedestrian phases or network coordination. Host traffic results and board functionality therefore support distinct, limited conclusions.

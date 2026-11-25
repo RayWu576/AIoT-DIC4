@@ -1,0 +1,19 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=4mm and 4mm]
+\node[module] (v) {Validate data};
+\node[module,below=of v] (x) {Extract features};
+\node[module,below=of x] (d) {Check model domain};
+\node[module,below left=of d] (t) {Tree inference};
+\node[module,below right=of d] (r) {Fallback rules};
+\node[module,below=18mm of d] (s) {Record decision and check submission};
+\node[module,below=of s] (a) {Apply at cycle boundary};
+\node[module,below=of a] (b) {Read back and report};
+\draw[flow] (v)--(x);\draw[flow] (x)--(d);
+\draw[flow] (d)--(t);\draw[flow] (d)--(r);
+\draw[flow] (t.south)--(s.north west);\draw[flow] (r.south)--(s.north east);
+\draw[flow] (s)--(a);\draw[flow] (a)--(b);
+\end{tikzpicture}
+\caption{Decision and execution sequence for valid submissions.}
+\label{fig:workflow}
+\end{figure}

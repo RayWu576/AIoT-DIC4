@@ -1,0 +1,6 @@
+\begin{abstract}
+Fixed-time traffic signals allocate green time according to preset schedules, which may leave queues when demand changes across approaches. The Traffic Timing Assistant addresses this problem for straight-through movements on two axes at a single intersection. A decision tree selects from three predefined timing plans using recent arrivals and estimated queues; a rule-based fallback handles features outside the model's applicable domain. The design assigns analysis and selection to an ARM processor and phase sequencing to an FPGA, with plan changes at complete-cycle boundaries and readback to support execution checks. Two proposal-reported host experiments using synthetic arrivals and simplified queues found aggregate queue vehicle-second reductions of 18.28\% and 19.71\% against fixed balanced timing. Five of eighteen and two of six scenarios, respectively, performed worse. The proposal also reports that the development board applied a timing plan. Raw traces were unavailable for independent reproduction. The results describe a course prototype and motivate further validation of the integrated workflow.
+\end{abstract}
+\begin{IEEEkeywords}
+Decision trees, explainable AI, FPGA, hardware/software co-design, traffic signal control.
+\end{IEEEkeywords}

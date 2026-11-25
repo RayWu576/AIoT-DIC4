@@ -1,0 +1,21 @@
+\section{Related Work}
+Bastani et al. \cite{bastani} extract tree policies from reinforcement learning agents. Their study illustrates how tree structure can make policy decisions inspectable. Here the training targets come from a timing evaluation rule, and the tree is used to explain plan selection.
+
+CoLLMLight \cite{yuan} uses cooperating language-model agents for network-wide signal control. Virtual Traffic Police \cite{wei} places language-model reasoning above a conventional controller for incident response. These studies address richer coordination and control settings than the present three-action problem. A small tree is suitable for numerical inputs and can expose the predicates leading to a plan without a language model.
+
+Table~\ref{tab:work} summarizes the six sources. The engineering gap addressed here is how to link a small selector's reasoning to the behavior of a board-level phase controller. The literature motivates the design choices, and the evaluation concerns a separate, single-intersection prototype.
+
+\begin{table}[t]
+\caption{Related work and its role in the design}
+\label{tab:work}\centering\footnotesize
+\begin{tabular}{@{}p{.29\columnwidth}p{.66\columnwidth}@{}}
+\toprule Source and type & Relevance or scope\\ \midrule
+VIPER \cite{bastani}, conference & Inspectable tree policies in benchmark control tasks\\
+CoLLMLight \cite{yuan}, preprint & Cooperative agents for network-level signal control\\
+Virtual Traffic Police \cite{wei}, preprint & Hierarchical control for incidents\\
+Hong Kong \cite{hk}, government feature & Operational motivation from a trial\\
+Wu et al. \cite{wu}, journal & City-scale assessment of adaptive timing\\
+FHWA \cite{koonce}, manual & Phase timing and evaluation concepts\\
+\bottomrule
+\end{tabular}
+\end{table}

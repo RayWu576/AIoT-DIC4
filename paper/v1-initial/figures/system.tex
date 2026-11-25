@@ -1,0 +1,19 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=3.5mm and 5mm, every node/.append style={module,text width=26mm}]
+\node (a) {1. Task input};
+\node[right=of a] (b) {2. Data validation};
+\node[below=of b] (c) {3. Traffic analysis};
+\node[left=of c] (d) {4. Decision tree};
+\node[below=of d] (e) {5. Domain constraints};
+\node[right=of e] (f) {6. Explanation};
+\node[below=of e] (g) {7. ARM--FPGA execution};
+\node[right=of g] (h) {8. Readback and display};
+\draw[flow] (a)--(b);\draw[flow] (b)--(c);
+\draw[flow] (c)--(d);\draw[flow] (d)--(e);
+\draw[flow] (e)--(f);\draw[flow] (e)--(g);
+\draw[flow] (g)--(h);\draw[flow,dashed] (h)--(f);
+\end{tikzpicture}
+\caption{Eight modules and the execution feedback path (dashed).}
+\label{fig:system}
+\end{figure}
