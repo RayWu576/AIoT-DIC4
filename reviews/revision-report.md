@@ -1,0 +1,23 @@
+# V1 to V2 revision report
+
+R01-R09 match the issue IDs in [the V1 review](v1-review.md) and the requirements in the [revision OpenSpec change](../openspec/changes/revise-ieee-conference-paper/specs/paper-review-traceability/spec.md). V1 remains preserved at its own tag. V2 used the same proposal evidence. The degradation percentages are arithmetic on the reported counts.
+
+| Revision ID | Section | V1 Content | Identified Issue | V2 Content | Reason for Revision | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| R01 | I and Abstract | Questions and contributions in a single paragraph; generic abstract close | The three goals imply similar evidence maturity, although only queue summaries and a qualitative application result are available. | Three questions paired with available evidence and missing traces; named handoff and audit contribution | Align the research claims with what each test can establish. | Applied |
+| R02 | II and references | Six sources summarized by relevance; Wu locator printed as 2013 | The gap is stated without showing how each evidence type differs; the printed Wu reference presents 2013 as pagination and omits a stable DOI link. | Evidence roles by source, two preprints named, Art. no. 2013 and DOI link | Clarify literature scope and allow direct reference verification. | Applied |
+| R03 | III-B to III-D | Four inputs in a vector; reference labeling and fallback described in prose | No explicit queue accounting or boundary between training label, in-domain inference and runtime fallback. | Symbolic queue conservation, completed-interval arrivals, label minimization and piecewise inference or fallback | Make inputs, assumptions, and roles of the scoring rule and fallback auditable. | Applied |
+| R04 | III-E to III-F and IV-D | ARM submits; FPGA applies; recommendation compared with board state | An accepted request and an applied plan can appear equivalent, and a stale readback may be mistaken for a mismatch. | Candidate, pending and active states with before/after boundary checks and indeterminate readback | Tie execution claims to time-aligned evidence. | Applied |
+| R05 | IV-A to IV-B | Overall queue formula and general description of average waiting | Undefined denominator and censored waiting prevent meaningful comparisons; paired conditions and aggregation need a sharper protocol. | Directional queue and residual measures, zero-baseline handling, pooled estimator and explicit wait denominator with censoring | Specify a reproducible protocol without implying the preliminary runs used it. | Applied |
+| R06 | IV-C to IV-E | Degraded counts and general discussion | Counts lack an interpretable denominator in the discussion, and competing causes are not connected to diagnostic traces. | 5/18 (27.8%) and 2/6 (33.3%); hypotheses linked to timing, queue and rule diagnostics | Preserve the negative cases and explain how to investigate them without attribution from aggregates. | Applied |
+| R07 | IV-D to IV-E and V | General call for comparative runs and board traces | The minimum artifact set differs for model training, replay and board verification and is not enumerated in the paper. | Separate artifact lists for host replay, tree training and board observation; exact limits carried to the conclusion | Make reproducibility gaps concrete. | Applied |
+| R08 | Figs. 1-3 and Table I | Compact architecture and generic handoff arrows; justified narrow cells | Workflow branches are unlabeled, board arrows are generic, and narrow justified source cells introduce uneven spacing. | Full-width system figure, labeled branches, board state transitions and ragged-right table cells | Expose decision points and improve two-column readability. | Applied |
+| R09 | Abstract, IV-C and V | Generic abstract close and mixed metric descriptions | Generic closing language gives the reader little guidance on the limits of the evidence. | Endpoint-specific caveats and consistent queue vehicle-second terminology | Improve academic precision and keep queue burden distinct from waiting. | Applied |
+
+## Changes by purpose
+
+R01 and R03-R07 are substantive revisions to the research framing, method, architecture and experimental interpretation. R02 improves the related-work analysis and bibliographic precision. R08 improves figure semantics and table layout. R09 improves language and terminological consistency.
+
+Issue closure refers to manuscript revisions. The missing project data and unverified board edge cases remain listed in [the research gaps](../research/research-gaps.md).
+
+[Optional LaTeX difference PDF](../deliverables/DIC4_Conference_V1_V2_Diff.pdf) marks manuscript text and table edits. It displays the revised figures and bibliography.

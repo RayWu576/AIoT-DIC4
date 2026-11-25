@@ -1,0 +1,16 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=5mm and 13mm]
+\node[module,text width=26mm] (a) {ARM\\Select candidate};
+\node[module,text width=29mm,right=of a] (b) {FPGA\\Hold accepted plan};
+\node[module,text width=29mm,below=of b] (c) {Apply at next boundary};
+\node[module,text width=29mm,below=of c] (d) {Active plan drives phase and countdown};
+\node[module,text width=26mm,left=of d] (e) {Check post-boundary readback};
+\draw[flow] (a)--node[above,font=\scriptsize]{Submit} (b);
+\draw[flow] (b)--(c);\draw[flow] (c)--(d);
+\draw[flow] (d)--node[above,font=\scriptsize]{State} (e);
+\draw[flow,dashed] (a)--(e);
+\end{tikzpicture}
+\caption{Logical ARM--FPGA handoff. The candidate is retained for comparison, while acceptance and application are distinct events.}
+\label{fig:board}
+\end{figure}

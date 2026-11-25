@@ -1,0 +1,32 @@
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[node distance=5mm and 6mm]
+\node[module,text width=29mm] (v) {Sufficient data?};
+\node[module,text width=24mm,right=of v] (r) {Reject with reason};
+\node[module,text width=29mm,below=of v] (x) {Update features; wait for decision boundary};
+\node[module,text width=29mm,below=of x] (m) {Features in domain?};
+\node[module,text width=24mm,right=of m] (f) {Fallback rules};
+\node[module,text width=29mm,below=of m] (t) {Tree inference};
+\node[module,text width=29mm,below=of t] (l) {Log recommendation};
+\node[module,text width=24mm,right=of l] (o) {Report only};
+\node[module,text width=29mm,below=of l] (g) {Check plan, device and expiry};
+\node[module,text width=24mm,right=of g] (z) {Reject with reason};
+\node[module,text width=29mm,below=of g] (a) {Submit; apply at cycle boundary};
+\node[module,text width=29mm,below=of a] (b) {Read back and classify result};
+\draw[flow] (v)--node[above,font=\scriptsize]{No} (r);
+\draw[flow] (v)--node[right,font=\scriptsize]{Yes} (x);
+\draw[flow] (x)--(m);
+\draw[flow] (m)--node[above,font=\scriptsize]{No} (f);
+\draw[flow] (m)--node[right,font=\scriptsize]{Yes} (t);
+\draw[flow] (t)--(l);
+\draw[flow] (f.south) |- ([xshift=-3mm,yshift=2mm]l.north east) -- ([xshift=-3mm]l.north east);
+\draw[flow] (l)--node[below,font=\scriptsize]{Review} (o);
+\draw[flow] (l)--node[right,font=\scriptsize]{Execute} (g);
+\draw[flow] (g)--node[above,font=\scriptsize]{Fail} (z);
+\draw[flow] (g)--node[right,font=\scriptsize]{Pass} (a);
+\draw[flow] (a)--(b);
+\end{tikzpicture}
+\caption{Decision and execution branches. Only a valid execution-mode request reaches the FPGA.}
+\label{fig:workflow}
+\end{figure}
+

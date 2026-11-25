@@ -1,0 +1,19 @@
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[node distance=5mm and 7mm, every node/.append style={module,text width=28mm,minimum height=9mm}]
+\node[dashed] (a) {1. Structured task\\Source and mode};
+\node[dashed,right=of a] (b) {2. Data validation\\Quality and history};
+\node[right=of b] (c) {3. Traffic analysis\\Queues and arrivals};
+\node[right=of c] (d) {4. Decision tree\\Three plan classes};
+\node[below=of d] (e) {5. Domain constraints\\Fallback and plan gate};
+\node[left=of e] (g) {7. ARM--FPGA\\Plan execution};
+\node[left=of g] (h) {8. Readback\\Plan, phase, countdown};
+\node[dashed,left=of h] (f) {6. Explanation\\Decision and result};
+\draw[flow] (a)--(b);\draw[flow] (b)--(c);\draw[flow] (c)--(d);
+\draw[flow] (d)--(e);\draw[flow] (e)--(g);\draw[flow] (g)--(h);
+\draw[flow] (h)--(f);
+\draw[flow,dashed] (e.south) -- ++(0,-3mm) -| (f.south);
+\end{tikzpicture}
+\caption{Eight-module design. Dashed boxes indicate structured intake, cross-source checks and unified reporting pending integration. The dashed arrow carries the decision record; readback supplies execution evidence.}
+\label{fig:system}
+\end{figure*}

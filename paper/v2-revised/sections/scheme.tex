@@ -1,0 +1,72 @@
+\section{Proposed Scheme}
+\subsection{System Overview}
+The eight modules in Fig.~\ref{fig:system} connect task mode and data to plan selection, reporting and board feedback. The validation module checks source, timestamps, units and sufficient history before traffic features enter the selector. Domain constraints govern the model and the admissible plans. The report combines the decision record with the device evidence. The model and control cores are described in the proposal; intake, cross-source validation and reporting still require integration.
+
+\input{figures/system}
+
+\subsection{Traffic Features}
+Let $d\in\{\mathrm{NS},\mathrm{EW}\}$ and let $q_{d,k}$ be the queue sampled at the start of interval $k$. A symbolic FIFO accounting model uses arrivals $a_{d,k}$ and departures $s_{d,k}$ during the interval:
+\begin{equation}
+q_{d,k+1}=q_{d,k}+a_{d,k}-s_{d,k},\quad
+0\le s_{d,k}\le q_{d,k}+a_{d,k}.
+\label{eq:conservation}
+\end{equation}
+The service model and event ordering determine which vehicles can depart within the same interval. This equation states conservation without choosing either. If $W$ spans $m$ completed intervals, recent arrivals are $A_{d,k}=\sum_{i=k-m}^{k-1}a_{d,i}$. The feature vector is
+\begin{equation}
+\mathbf{x}_k=(q_{\mathrm{NS},k},q_{\mathrm{EW},k},
+A_{\mathrm{NS},k},A_{\mathrm{EW},k})^\mathsf{T}.
+\label{eq:features}
+\end{equation}
+All components count vehicles. Table~\ref{tab:features} gives the feature and action definitions. The source does not specify the window, step size, service parameters or within-step ordering. Minute-level official counts may support a data-quality review. A per-step replay derived from those counts would need a documented reconstruction method.
+
+\begin{table}[t]
+\caption{Features and plan classes}
+\label{tab:features}\centering\footnotesize
+\begin{tabular}{@{}L{.32\columnwidth}L{.63\columnwidth}@{}}
+\toprule Symbol & Meaning\\ \midrule
+$q_{\mathrm{NS},k},q_{\mathrm{EW},k}$ & Two queue estimates at decision step $k$\\
+$A_{\mathrm{NS},k},A_{\mathrm{EW},k}$ & Two arrival counts over the previous $m$ intervals\\
+$B$ & Balanced plan and fixed-time baseline\\
+$P_{\mathrm{NS}}$ & Plan favoring the north--south axis\\
+$P_{\mathrm{EW}}$ & Plan favoring the east--west axis\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Labeling, Inference and Fallback}
+Let $\mathcal P=\{B,P_{\mathrm{NS}},P_{\mathrm{EW}}\}$. The proposal describes a reference timing evaluation rule that labels training examples. Abstracting its score as a cost $C$, this corresponds to selecting
+\begin{equation}
+y_i\in\operatorname*{arg\,min}_{p\in\mathcal P}C(i,p),
+\label{eq:label}
+\end{equation}
+where $i$ indexes a training example. The scoring terms, evaluation horizon and tie-breaking policy require verification. The minimizing-cost notation is a representation of candidate evaluation.
+
+For valid data at a decision boundary, the candidate plan is
+\begin{equation}
+ p_{\rm rec}=
+ \begin{cases}
+ T(\mathbf{x}_k), & \mathbf{x}_k\in\mathcal D,\\
+ F(\mathbf{x}_k), & \mathbf{x}_k\notin\mathcal D ,
+ \end{cases}
+\label{eq:selection}
+\end{equation}
+where $T$ follows threshold predicates to a leaf, $\mathcal D$ is the model's applicable feature domain, and $F$ denotes runtime fallback. The record saves the actual features, selected plan and traversed predicates or fallback reason. The relationship between fallback and the labeling rule is undocumented, as are tree depth, thresholds and domain bounds. An in-domain tree disagreement with its training reference is possible even when the recommendation has a readable explanation.
+
+\subsection{Domain and Submission Constraints}
+Insufficient data cause the control request to be rejected before model inference. Review-only mode records a recommendation without submitting it. In execution mode, check that the plan belongs to $\mathcal P$, the device is valid and the request is current. Reject invalid or expired requests and record the reason. The plan catalog must preserve allowed phase order and complete-cycle switching. The plan durations and device validation details are pending.
+
+\subsection{ARM--FPGA Co-Design}
+Figure~\ref{fig:board} gives a logical interface distinct from the board's undocumented transport. The ARM manages observations, selection and submission. The FPGA manages phase and countdown. An accepted submission denotes a pending plan in the logical model. The active plan governs the current cycle, and the pending plan may become active at the next complete-cycle boundary. The verification record compares the active plan after that boundary with the plan expected to take effect.
+
+\input{figures/board}
+
+\subsection{Explainable Decision and Execution Workflow}
+Figure~\ref{fig:workflow} shows the proposed integration. The following operational sequence specifies the main branches.
+\begin{enumerate}
+\item Read task mode and traffic data. Reject insufficient data and record the cause.
+\item Update queues and arrivals. Continue observing until a decision boundary.
+\item Select via the tree or fallback using \eqref{eq:selection}. Log features and the reason for the candidate.
+\item Report without submitting in review-only mode. In execution mode, reject invalid or expired requests; submit a valid plan.
+\item Apply the accepted plan at the next complete-cycle boundary. Read back applied plan, phase and countdown. Report agreement, mismatch or insufficient readback evidence.
+\end{enumerate}
+\input{figures/workflow}

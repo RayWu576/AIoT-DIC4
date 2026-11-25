@@ -1,0 +1,21 @@
+\section{Related Work}
+Bastani et al. \cite{bastani} extract tree policies from reinforcement-learning policies and verify specified properties in benchmark tasks. Their evidence motivates inspecting a path through a tree. Here the target comes from a traffic timing score, and the decision path explains the selected class. A path supplies no direct evidence of board execution.
+
+Yuan et al. \cite{yuan} use cooperating language-model agents across a network. Wei et al. \cite{wei} propose a hierarchy in which an upper-level language model adjusts a conventional controller during incidents. These preprints motivate considering coordination and division of responsibility at different scales. At a single intersection with four numerical inputs and three actions, a small tree supports explicit predicate reporting and a bounded plan vocabulary. Its runtime footprint has yet to be measured.
+
+The government feature describes an adaptive signal trial \cite{hk}. Wu et al. quantify potential city-scale effects using data and simulation \cite{wu}, while the FHWA manual provides engineering background on phase timing \cite{koonce}. These sources motivate the control problem and its constraints. Their results concern different units of analysis and cannot establish the prototype's queue or hardware performance. Table~\ref{tab:work} identifies the evidence each source contributes.
+
+\begin{table}[t]
+\caption{Evidence from the cited literature}
+\label{tab:work}\centering\footnotesize
+\begin{tabular}{@{}L{.31\columnwidth}L{.64\columnwidth}@{}}
+\toprule Source and type & Evidence relevant to this design\\ \midrule
+VIPER \cite{bastani}, NeurIPS & Tree extraction and property checks in benchmark tasks\\
+CoLLMLight \cite{yuan}, preprint & Cooperative network control evaluated in simulation\\
+Virtual Traffic Police \cite{wei}, preprint & Hierarchical adjustment during simulated incidents\\
+Hong Kong \cite{hk}, government feature & Operational trial as evidence of practice\\
+Wu et al. \cite{wu}, journal article & City-scale adaptive timing evaluated with data and simulation\\
+FHWA \cite{koonce}, technical manual & Engineering concepts for phase timing and evaluation\\
+\bottomrule
+\end{tabular}
+\end{table}

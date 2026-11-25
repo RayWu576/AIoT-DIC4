@@ -1,0 +1,11 @@
+\section{Introduction}
+When directional demand varies, a fixed green split can leave a queue on one axis while service on the other goes unused. Adaptive timing can respond to this imbalance, but a controller demonstration must make two different events observable: selecting a timing plan and applying it. A credible report must identify the data and decision path behind a recommendation, then establish which plan actually governed the next cycle. Traffic engineering guidance \cite{koonce}, a Hong Kong trial \cite{hk}, and a city-scale adaptive timing analysis \cite{wu} motivate the demand problem.
+
+The Traffic Timing Assistant targets straight-through movements on the north--south (NS) and east--west (EW) axes of one intersection. Three questions govern the assessment:
+\begin{enumerate}
+\item How does demand-aware selection affect queues and waiting relative to a fixed balanced plan? The available paired host summaries quantify aggregate queue burden; per-vehicle waiting records are pending.
+\item Can an operator explain a recommendation? The design records the input values and traversed predicates or fallback reason. Logged decision paths are needed to audit fidelity.
+\item Did the plan take effect at the intended boundary? The proposal reports a board application test. Time-aligned state observations are needed to verify boundary behavior and mismatches.
+\end{enumerate}
+
+The contribution is the design of an auditable path from traffic observations to constrained plan selection and verified phase execution. It combines a three-class selector and a fallback policy, a cycle-boundary handoff between ARM software and FPGA logic, and a common record that relates the recommendation to device state. The proposal reports working model and controller cores. Structured task intake, cross-source validation and unified reporting remain integration work.

@@ -1,0 +1,6 @@
+\begin{abstract}
+As directional demand changes, fixed signal timing can allocate service where it is least needed. This paper presents the Traffic Timing Assistant for straight-through movements at a single intersection. A decision tree uses directional queue estimates and recent arrivals to choose among three predefined plans. The design records the predicates behind each recommendation and uses a rule-based fallback when valid features fall outside the model domain. ARM software handles selection, while an FPGA controls phase sequencing and adopts accepted plans at complete-cycle boundaries. The workflow records the recommendation and the applied plan separately so that an operator can check execution. Two proposal-reported synthetic host comparisons with fixed balanced timing show aggregate queue vehicle-second reductions of 18.28\% and 19.71\%. Queue performance degraded in five of eighteen and two of six scenarios, respectively. The proposal also reports plan application on a development board. The host summaries quantify queue burden under a simplified model. Validating waiting time, directional trade-offs and boundary behavior requires run-level and device traces.
+\end{abstract}
+\begin{IEEEkeywords}
+Decision trees, explainable AI, FPGA, hardware/software co-design, traffic signal control.
+\end{IEEEkeywords}

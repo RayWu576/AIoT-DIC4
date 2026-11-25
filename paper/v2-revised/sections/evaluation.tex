@@ -1,0 +1,59 @@
+\section{Experimental Evaluation}
+\subsection{Paired Synthetic Setup}
+Both host policies use the same synthetic arrivals and simplified FIFO service assumptions. The baseline retains $B$ through the run. The adaptive policy uses the tree with fallback and changes plans at complete-cycle boundaries. A reproducible replay should also match initial queues, run horizon, phase order, service parameters and event ordering. Differences in service availability induced by the selected plan remain part of the treatment. The five scenario families in Table~\ref{tab:cases} define the evaluation scope. The proposal does not identify their allocation across the reported batches.
+
+\begin{table}[t]
+\caption{Scenario families and recommended diagnostics}
+\label{tab:cases}\centering\footnotesize
+\begin{tabular}{@{}L{.34\columnwidth}L{.61\columnwidth}@{}}
+\toprule Scenario & Diagnostic focus\\ \midrule
+Balanced demand & Neutral-plan frequency and directional waits\\
+Directional imbalance & Per-axis queue burden and residual queues\\
+Directional reversal & Boundary-to-application interval and per-axis queues\\
+Sudden burst & Peak queue and service before the next boundary\\
+Oversaturation & Residual queues and directional service trade-offs\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Metric Definitions and Censoring}
+For a replay of $K$ intervals of duration $\Delta t$ seconds, use the start-of-interval sample from \eqref{eq:conservation} to define
+\begin{equation}
+J_d=\Delta t\sum_{k=0}^{K-1}q_{d,k},
+\quad J=\sum_d J_d,\quad R_d=q_{d,K}.
+\label{eq:queue}
+\end{equation}
+Here $J_d$ is the directional queue burden in vehicle-seconds, and $R_d$ is the terminal queue in vehicles. For a scenario $i$, relative queue reduction is $100(J_{i,B}-J_{i,A})/J_{i,B}$ percent for $J_{i,B}>0$. A zero baseline makes the relative percentage undefined; the absolute difference remains reportable. In a reproducible batch, a pooled improvement can use the baseline sum $\sum_i J_{i,B}$ as its denominator when positive. This weights scenarios by baseline burden. The calculation used for the published proposal summaries cannot be checked without the aggregation script.
+
+Let $\mathcal C_d$ denote vehicles with complete queue-entry and service-start timestamps on axis $d$ and $w_j$ their pre-service waits. Report
+\begin{equation}
+\overline{w}_d=\frac{\sum_{j\in\mathcal C_d}w_j}{|\mathcal C_d|},
+\qquad |\mathcal C_d|>0.
+\end{equation}
+Report the completion count, residual queue, and accrued waiting of vehicles still queued through the horizon. The completed-vehicle mean is undefined for an empty $\mathcal C_d$ and can decrease while residual queues grow. Track initial backlog separately if its queue-entry timestamps are unavailable. These definitions specify a proposed replay protocol; the waiting convention used in the preliminary runs is unknown. Directional outcomes should accompany pooled summaries even when total $J$ decreases.
+
+\subsection{Preliminary Results}
+The host summaries in Table~\ref{tab:results} each report lower aggregate queue vehicle-seconds and several degraded pairs. The degradation shares follow directly from the counts. Individual runs, absolute burdens and the relationship between the two batches require verification. The available summaries do not support estimates of dispersion or inferential statistics. The single board reversal result has no reported numerical magnitude.
+
+\begin{table}[t]
+\caption{Separate preliminary experiments from the proposal}
+\label{tab:results}\centering\footnotesize
+\begin{tabular}{@{}L{.30\columnwidth}L{.65\columnwidth}@{}}
+\toprule Evidence & Reported outcome and descriptive count\\ \midrule
+Host batch 1 & 18.28\% lower aggregate queue vehicle-seconds; 5/18 pairs degraded (27.8\%)\\
+Host batch 2 & 19.71\% lower aggregate queue vehicle-seconds; 2/6 pairs degraded (33.3\%)\\
+Development board & Plan application reported. Queue burden decreased in one synthetic directional reversal.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hardware Execution Verification}
+For a valid submission issued away from a boundary, capture the active plan immediately before and after the expected adoption boundary. Before the boundary, the old plan should still govern the output. After the boundary, the expected plan should be active and the observed phase and countdown should agree with the selected plan. Classify a comparable post-boundary plan readback as agreement or mismatch. When the observation is missing or cannot be aligned to the intended cycle, the comparison is indeterminate. A rejected or expired submission also requires a check that the running plan did not change because of that request. These are proposed test criteria. The available board summary supports application feasibility and does not establish these behaviors across cases.
+
+\subsection{Negative Results and Limitations}
+The proposal flags balanced demand and bursts as areas for refinement. To examine a degraded balanced case, compare priority assignments and per-axis waits against the fixed balanced baseline. To examine a degraded burst or reversal, align arrivals, decision time, requested plan and application time to see whether the extra service arrived after the demand peak. Compare the selected class with the reference label using the same inputs. A disagreement could indicate tree approximation error. Agreement followed by degradation would motivate checking the reference objective, service assumptions or application delay. The proposal supplies no traces to distinguish these hypotheses.
+
+A rule-only arm would help separate the benefit of adaptive timing from the effect of replacing a reference policy with its learned approximation. Directional diagnostics are necessary because reallocating service can improve total queue burden while shifting waiting onto one axis. The simplified FIFO model omits lane geometry, spillback, turning movements and interactions between intersections. Continuous official observations for two axes at the same site are insufficient for calibrated replay. Pedestrians and real-world validation are outside this evaluation.
+
+\subsection{Artifacts Required for Reproduction}
+For host replay, preserve scenario manifests, arrival traces and seeds, initial states, service and phase configuration, horizons, event order and per-step queues and departures. For the selector, include the training and test scenario split, feature window, scoring and tie rules, tree export, domain bounds and fallback configuration. For the board, record the software and bitstream versions and timestamp the recommendation, acceptance, cycle boundary, phase, countdown and active-plan readback. The proposal gives aggregate and qualitative findings. These artifacts are needed to reproduce the comparisons or independently verify exact handoff timing.
