@@ -24,3 +24,5 @@ The difference PDF marks prose and table changes. It uses the revised figures an
 ## Evidence status
 
 The manuscript reports the two host batches and the board summary separately. Individual scenario traces, model settings, directional waiting data and cycle-aligned board observations were unavailable, so the study results remain proposal-reported. See [research gaps](../research/research-gaps.md).
+
+[Publication record](publication.md).

@@ -14,4 +14,4 @@
 
 - [x] 2.1 Compile, verify and package the V2 draft independently.
 - [x] 2.2 Confirm V1 preservation and the comparison report.
-- [ ] 2.3 Publish V2 and verify both GitHub tags.
+- [x] 2.3 Publish V2 and verify both GitHub tags.
